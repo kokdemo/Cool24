@@ -3,7 +3,7 @@
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 	<meta name="description" content="24点游戏">
 	<meta name="author" content="@kokdemo">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0 uer-scalable=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
 	<title>Cool24</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/flat-ui.css" rel="stylesheet">
@@ -11,13 +11,14 @@
 	<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
 	<script type="text/javascript" src="js/rand.js"></script>
+	<script type="text/javascript" src="js/shake.js"></script>
 </head>
 <body>
 	<div class="container" id="game">
 		<div class="demo-headline">
 			<h1 class="demo-logo">
-				<div class="logo"></div>
-				Cool 24
+
+				<span id="title">Cool 24</span>
 				<small>简单游戏，简单生活</small>
 			</h1>
 		</div>
@@ -31,48 +32,48 @@
 			<div id="gamearea">
 
 			<div id="number" class="row demo-row">
-				<div class="col-md-3 col-xs-3 numbtn">
-					<botton id="1"></botton>
+				<div class="col-md-3 col-xs-3 col-sm-3 numbtn">
+					<button id="1"></button>
 				</div>
-				<div class="col-md-3 col-xs-3 numbtn">
-					<botton id="2"></botton>
+				<div class="col-md-3 col-xs-3 col-sm-3 numbtn">
+					<button id="2"></button>
 				</div>
-				<div class="col-md-3 col-xs-3 numbtn">
-					<botton id="3"></botton>
+				<div class="col-md-3 col-xs-3 col-sm-3 numbtn">
+					<button id="3"></button>
 				</div>
-				<div class="col-md-3 col-xs-3 numbtn">
-					<botton id="4"></botton>
+				<div class="col-md-3 col-xs-3 col-sm-3 numbtn">
+					<button id="4"></button>
 				</div>
 			</div>
 
 			<div id="sign" class="row demo-row">
-				<div class="col-md-2 col-xs-2">
-					<botton id="plus" class="signbtn"    >+</botton>
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<button id="plus" class="signbtn"    >+</button>
 				</div>
-				<div class="col-md-2 col-xs-2">
-					<botton id="subtract" class="signbtn">-</botton>
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<button id="subtract" class="signbtn">-</button>
 				</div>
-				<div class="col-md-2 col-xs-2">
-					<botton id="multiply" class="signbtn">*</botton>
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<button id="multiply" class="signbtn">*</button>
 				</div>
-				<div class="col-md-2 col-xs-2">
-					<botton id="divide" class="signbtn"  >/</botton>
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<button id="divide" class="signbtn"  >/</button>
 				</div>
-				<div class="col-md-2 col-xs-2">
-					<botton id="lbracket" class="">(</botton>
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<button id="lbracket" class="">(</button>
 				</div>
-				<div class="col-md-2 col-xs-2">
-					<botton id="rbracket" class="">)</botton>
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<button id="rbracket" class="">)</button>
 				</div>
 			</div>
 
 			<div id="count" class="row demo-row">
-				<div class="col-md-6 col-xs-6">
-					<input type="text" id="equation" disabled="disabled" class="col-md-3 col-xs-3" value=""></div>
-				<div class="col-md-3 col-xs-3">
+				<div class="col-xs-12 col-sm-6 col-md-6" id="inputs">
+					<input type="text" id="equation" disabled="disabled" class="" value=""></div>
+				<div class="col-xs-6 col-sm-3 col-md-3  ">
 					<a id="answer" text="" class="btn btn-large btn-block btn-danger">提交</a>
 				</div>
-				<div class="col-md-3 col-xs-3">
+				<div class="col-xs-6 col-sm-3 col-md-3  ">
 					<a id="ce" text="" class="btn btn-large btn-block btn-warning">清空</a>
 				</div>
 			</div>

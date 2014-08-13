@@ -5,6 +5,21 @@ $(document).ready(function() {
 	$("#ce").click(function() {ce()});
 });
 
+window.addEventListener('shake', ce(), false);
+
+function clock(){
+    var s=60;
+    var int = setInterval(function(){
+        s=s-1;
+        $("#title").text(s);
+        if (s<=0){
+        clearInterval(int);
+        lose();
+        }
+    }, 1000);
+
+}
+
 function inputall(){
 	inputnumber("#1");
 	inputnumber("#2");
@@ -26,13 +41,13 @@ function inputall(){
 
 function ce() {
 	$("#equation").val("");
-	$(".numbtn").fadeIn();
-};
+	$("#number div,#number button").show();
+    document.title = "Cool24";
+}
 
 function add(x) {
-	var inputnew = $('#equation').val()+ $(x).val();
-	$('#equation').val(inputnew);
-};
+	$('#equation').val($('#equation').val()+ $(x).val());
+}
 
 function inputnumber(x) {
 	$(x).click(function() {
@@ -41,7 +56,7 @@ function inputnumber(x) {
 		$(".numbtn").fadeOut();
 		$(".signbtn").fadeIn();
 	});
-};
+}
 
 function inputsign(x) {
 	$(x).click(function() {
@@ -49,17 +64,36 @@ function inputsign(x) {
 		$(".signbtn").fadeOut();
 		$(".numbtn").fadeIn();
 	});
-};
+}
+
+function lose(){
+    alert("时间结束！你失败了!");
+    if(document.body.clientWidth<700){
+        $("#gamearea").html("<h1 class='center'>快到右上角分享给你的微信好友吧！</h1>");
+        document.title = "我居然败给这个24点游戏，快来帮我挑战一下!";
+    }
+}
+
 
 function count() {
-	var answer = 0;
+    var words="";
 	var count = $("#equation").val();
-	answer = eval(count);
-	if (answer==24) {
+    var evals = eval(count);
+	var answer = Math.abs(evals-24);
+
+	if (answer<0.5) {
 		words = "你胜利了!\n你的最终结果为"+count+"=24";
+        if(document.body.clientWidth<700){
+            $("#gamearea").html("<h1 class='center'>快到右上角分享给你的微信好友吧！</h1>");
+            document.title = "我轻松的做出了这个24点，你也来挑战一下!";
+        }
 	} else{
-		words = "你失败了!\n你的最终结果为"+count+"="+answer;
-	};
+        words = "你失败了!\n"+"你的最终结果为"+count+"="+evals;
+        if(document.body.clientWidth<700){
+            $("#gamearea").html("<h1 class='center'>快到右上角分享给你的微信好友吧！</h1>");
+            document.title = "我居然败给这个24点游戏，快来帮我挑战一下!";
+        }
+	}
 	alert(words);
 	return words;
-};
+}

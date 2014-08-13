@@ -2,6 +2,15 @@
 	height: 48px;
 }
 
+#game div{
+    margin-top: 5px;
+}
+
+.center{
+    text-align: center;
+    font-family: "Microsoft Yahei", "微软雅黑", "宋体", "Arial", sans-serif;
+}
+
 #equation{
 	width: 100%;
 	height: 48px;
@@ -38,7 +47,7 @@
 	margin-left:auto; margin-right:auto;
 }
 
-@media screen and (max-width:500px){
+@media screen and (max-width:800px){
 	#equation{
 	width: 100%;
 	height: 48px;
@@ -54,6 +63,24 @@
 .col-xs-4,.col-xs-3,.col-xs-2,.col-xs-6{
 	padding-right: 3px;
 	padding-left: 3px;
+}
+
+#inputs{
+    padding: 4px;
+    width: 99%;
+    text-align: center;
+}
+
+.col-xs-3{
+    width: 24.8%;
+}
+
+.col-xs-2{
+    width: 16.5%;
+}
+
+.col-xs-6{
+    width: 49.5%;
 }
 
 #number{
