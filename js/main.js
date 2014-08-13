@@ -30,7 +30,7 @@ function inputall(){
 
 function ce() {
 	$("#equation").val("");
-	$("botton:hidden").show();
+	$(".numbtn:hidden,.signbtn:hidden").fadeIn();
 };
 
 function add(x) {
@@ -43,20 +43,17 @@ function add(x) {
 function inputnumber(x) {
 	$(x).click(function() {
 		add(x);
-		$(x).attr("disabled");
 		$(x).hide();
-		$("#numbers botton").val("");
-
+		$(".numbtn").fadeOut();
+		$(".signbtn").fadeIn();
 	});
 };
 
 function inputsign(x) {
 	$(x).click(function() {
 		add(x);
-		$("#1").val(num1);
-		$("#2").val(num2);
-		$("#3").val(num3);
-		$("#4").val(num4);
+		$(".signbtn").fadeOut();
+		$(".numbtn").fadeIn();
 	});
 };
 
@@ -64,9 +61,12 @@ function count() {
 	var count = $("#equation").val();
 	answer = eval(count);
 	if (answer==24) {
-		alert("你胜利了!\n你的最终结果为"+count+"=24");
+		words = "你胜利了!\n你的最终结果为"+count+"=24";
+		alert(words);
 	} else{
-		alert("你失败了!\n你的最终结果为"+count+"="+answer);
+		words ="你失败了!\n你的最终结果为"+count+"="+answer;
+		alert(words);
 	};
-	
+	return words;
+	//返回提示的句子
 };
