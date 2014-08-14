@@ -58,14 +58,23 @@ function getURLPar() {
 	}
 	return arrTmp;
 };
-
+var xint;
 function addwords(array){
     $("#gamearea").fadeIn();
     inputNumber(array);
     $("#number button").addClass("btn btn-large btn-block btn-info");
 	$("#sign button").addClass("btn btn-large btn-block btn-success");
     $("#gamestart").text("再来一盘");
-    clock($("#title"));
+    $("#answer").hide();
+    xint = clock(60);
+}
+
+function ce() {
+	$("#equation").val("");
+	$("#number div,#number button,#sign button").show();
+    //clearInterval(xint);
+    //xint = clock(60);
+    document.title = "Cool24";
 }
 
 $(document).ready(function() {
@@ -74,6 +83,7 @@ $(document).ready(function() {
         addwords(arrayList)
 	};
 	$("#gamestart").click(function() {
+        clearInterval(xint);
 		addwords(getRandom());
         ce();
         changeURL();

@@ -7,6 +7,7 @@ $(document).ready(function() {
 
 window.addEventListener('shake', ce(), false);
 
+
 function clock(){
     var s=60;
     var int = setInterval(function(){
@@ -17,7 +18,7 @@ function clock(){
         lose();
         }
     }, 1000);
-
+    return int
 }
 
 function inputall(){
@@ -39,22 +40,23 @@ function inputall(){
 	inputsign("#rbracket");
 }
 
-function ce() {
-	$("#equation").val("");
-	$("#number div,#number button").show();
-    document.title = "Cool24";
-}
+
 
 function add(x) {
 	$('#equation').val($('#equation').val()+ $(x).val());
 }
 
 function inputnumber(x) {
+    var clickNumber = 0;
 	$(x).click(function() {
+        clickNumber = clickNumber+1;
 		add(x);
 		$(x).hide();
 		$(".numbtn").fadeOut();
 		$(".signbtn").fadeIn();
+        if (clickNumber>=4){
+            $("#answer").show();
+        }
 	});
 }
 
@@ -68,6 +70,7 @@ function inputsign(x) {
 
 function lose(){
     alert("时间结束！你失败了!");
+    $("#gamearea").hide();
     if(document.body.clientWidth<700){
         $("#gamearea").html("<h1 class='center'>快到右上角分享给你的微信好友吧！</h1>");
         document.title = "我居然败给这个24点游戏，快来帮我挑战一下!";
