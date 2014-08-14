@@ -4,6 +4,7 @@ Cool24
 ####大概使用的技术
 
 +jQuery
+
 +BootStrap+flatui
 
 
