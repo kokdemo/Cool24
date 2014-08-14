@@ -71,6 +71,7 @@ function inputsign(x) {
 function lose(){
     alert("时间结束！你失败了!");
     $("#gamearea").hide();
+    $("#title").text("Cool24");
     if(document.body.clientWidth<700){
         $("#gamearea").html("<h1 class='center'>快到右上角分享给你的微信好友吧！</h1>");
         document.title = "我居然败给这个24点游戏，快来帮我挑战一下!";
