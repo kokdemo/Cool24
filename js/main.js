@@ -1,13 +1,14 @@
 $(document).ready(function() {
 	$("#gamearea").hide();
 	inputall();
+
 	$("#answer").click(function() {count()});
 	$("#ce").click(function() {ce()});
 });
 
-window.addEventListener('shake', ce(), false);
 
 
+var clickNumber = 0;
 function clock(){
     var s=60;
     var int = setInterval(function(){
@@ -40,14 +41,11 @@ function inputall(){
 	inputsign("#rbracket");
 }
 
-
-
 function add(x) {
 	$('#equation').val($('#equation').val()+ $(x).val());
 }
 
 function inputnumber(x) {
-    var clickNumber = 0;
 	$(x).click(function() {
         clickNumber = clickNumber+1;
 		add(x);

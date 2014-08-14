@@ -72,10 +72,12 @@ function addwords(array){
 function ce() {
 	$("#equation").val("");
 	$("#number div,#number button,#sign button").show();
+    clickNumber = 0;
     //clearInterval(xint);
     //xint = clock(60);
     document.title = "Cool24";
 }
+window.addEventListener('shake', ce(), false);
 
 $(document).ready(function() {
 	var arrayList = getURLPar();
