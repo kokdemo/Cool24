@@ -99,3 +99,83 @@ function count() {
 	alert(words);
 	return words;
 }
+
+function temp4(a,b) {
+    return(
+        [a+b,a-b,b-a,a*b,a/b,b/a]
+    )
+}
+var deepCopy = function(o) {
+    if (o instanceof Array) {
+        var n = [];
+        for (var i = 0; i < o.length; ++i) {
+            n[i] = deepCopy(o[i]);
+        }
+        return n;
+
+    } else if (o instanceof Object) {
+        var n = {}
+        for (var i in o) {
+            n[i] = deepCopy(o[i]);
+        }
+        return n;
+    } else {
+        return o;
+    }
+}
+
+function is24(number){
+    var origin = deepCopy(number);
+    for (var i = 0; i < number.length; i++) {
+        var a = number[i];
+        number.splice(i,1);
+        for (var j = 0; j < number.length; j++) {
+            var b= number[j];
+            number.splice(j,1);
+            var temp = temp4(a,b);
+            for (var k = 0; k < number.length; k++) {
+                var c= number[k];
+                number.splice(j,1);
+                var d = number[0];
+                var temp2 = [];
+                temp2 = temp2.concat(temp4(temp[0],c));
+                temp2 = temp2.concat(temp4(temp[1],c));
+                temp2 = temp2.concat(temp4(temp[2],c));
+                temp2 = temp2.concat(temp4(temp[3],c));
+                temp2 = temp2.concat(temp4(temp[4],c));
+                temp2 = temp2.concat(temp4(temp[5],c));
+                var temp3 =[];
+                for(var o=0;o<temp2.length;o++){
+                    temp3 = temp3.concat(temp4(temp2[o],d));
+                }
+                for(var q=0;q<temp3.length;q++){
+                    if(temp3[q]==24){
+                        var signs = ['+','-','-','*','/','/']
+                        var sign1 = Math.floor(q/36);
+                        var sign2 = Math.floor(q%36/6);
+                        var sign3 = q%6;
+                        var strings = '';
+                        if(sign1 == 2||sign1 ==5){
+                            strings += '('+b+signs[sign1]+a+')';
+                        }else{
+                            strings += '('+a+signs[sign1]+b+')';
+                        }
+                        if(sign2 == 2||sign2 ==5){
+                            strings = '('+c+signs[sign2]+strings+')';
+                        }else{
+                            strings = '('+strings+signs[sign2]+c+')';
+                        }
+                        if(sign3 == 2||sign3 ==5){
+                            strings = '('+d+signs[sign3]+strings+')';
+                        }else{
+                            strings = '('+strings+signs[sign3]+d+')';
+                        }
+                        console.info(q,sign1,sign2,sign3,strings);
+                        console.info(eval(strings));
+                    }
+                }
+            }
+        }
+        number = deepCopy(origin);
+    }
+}

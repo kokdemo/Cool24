@@ -1,91 +1,93 @@
-<html >
-<head >
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	<meta name="description" content="24点游戏">
-	<meta name="author" content="@kokdemo">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
-	<title>Cool24</title>
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/flat-ui.css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="css/desktopScreen.css" />
-	<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="js/main.js"></script>
-	<script type="text/javascript" src="js/rand.js"></script>
-	<script type="text/javascript" src="js/shake.js"></script>
-</head>
-<body>
-	<div class="container" id="game">
-		<div class="demo-headline">
-			<h1 class="demo-logo">
+<html>
 
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="description" content="24点游戏">
+    <meta name="author" content="@kokdemo">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
+    <title>Cool24</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/flat-ui.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/rand.js"></script>
+    <script type="text/javascript" src="js/shake.js"></script>
+</head>
+
+<body>
+    <div class="container" id="game">
+        <div class="demo-headline">
+            <h1 class="demo-logo">
 				<span id="title">Cool 24</span>
 				<small>简单游戏，简单生活</small>
 			</h1>
-		</div>
-		<div id="start"  class="row demo-row">
-			<div class="col-md-4 col-xs-4"></div>
-			<div class="col-md-4 col-xs-4">
-				<button id="gamestart" class="btn btn-large btn-block">游戏开始</button>
-			</div>
-			<div class="col-md-4 col-xs-4"></div>
-			</div>
-			<div id="gamearea">
+        </div>
+        <div id="start" class="demo-row">
+            <button id="gamestart" class="btn btn-large btn-block">游戏开始</button>
+        </div>
+        <div id="gamearea">
 
-			<div id="number" class="row demo-row">
-				<div class="col-md-3 col-xs-3 col-sm-3 numbtn">
-					<button id="1"></button>
-				</div>
-				<div class="col-md-3 col-xs-3 col-sm-3 numbtn">
-					<button id="2"></button>
-				</div>
-				<div class="col-md-3 col-xs-3 col-sm-3 numbtn">
-					<button id="3"></button>
-				</div>
-				<div class="col-md-3 col-xs-3 col-sm-3 numbtn">
-					<button id="4"></button>
-				</div>
-			</div>
+            <div id="number" class="row demo-row">
+                <div class="col-md-3 col-xs-3 col-sm-3 numbtn">
+                    <button id="1"></button>
+                </div>
+                <div class="col-md-3 col-xs-3 col-sm-3 numbtn">
+                    <button id="2"></button>
+                </div>
+                <div class="col-md-3 col-xs-3 col-sm-3 numbtn">
+                    <button id="3"></button>
+                </div>
+                <div class="col-md-3 col-xs-3 col-sm-3 numbtn">
+                    <button id="4"></button>
+                </div>
+            </div>
 
-			<div id="sign" class="row demo-row">
-				<div class="col-md-2 col-sm-2 col-xs-2">
-					<button id="plus" class="signbtn"    >+</button>
-				</div>
-				<div class="col-md-2 col-sm-2 col-xs-2">
-					<button id="subtract" class="signbtn">-</button>
-				</div>
-				<div class="col-md-2 col-sm-2 col-xs-2">
-					<button id="multiply" class="signbtn">*</button>
-				</div>
-				<div class="col-md-2 col-sm-2 col-xs-2">
-					<button id="divide" class="signbtn"  >/</button>
-				</div>
-				<div class="col-md-2 col-sm-2 col-xs-2">
-					<button id="lbracket" class="">(</button>
-				</div>
-				<div class="col-md-2 col-sm-2 col-xs-2">
-					<button id="rbracket" class="">)</button>
-				</div>
-			</div>
+            <div id="sign" class="row demo-row">
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <button id="plus" class="signbtn">+</button>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <button id="subtract" class="signbtn">-</button>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <button id="multiply" class="signbtn">*</button>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <button id="divide" class="signbtn">/</button>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <button id="lbracket" class="">(</button>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <button id="rbracket" class="">)</button>
+                </div>
+            </div>
 
-			<div id="count" class="row demo-row">
-				<div class="col-xs-12 col-sm-6 col-md-6" id="inputs">
-					<input type="text" id="equation" disabled="disabled" class="" value=""/></div>
-				<div class="col-xs-6 col-sm-3 col-md-3  ">
-					<a id="answer" class="btn btn-large btn-block btn-danger">提交</a>
-				</div>
-				<div class="col-xs-6 col-sm-3 col-md-3  ">
-					<a id="ce" class="btn btn-large btn-block btn-warning">清空</a>
-				</div>
-			</div>
-		</div>
-	</div>
+            <div id="count" class="row demo-row">
+                <div class="col-xs-12 col-sm-6 col-md-6" id="inputs">
+                    <input type="text" id="equation" disabled="disabled" class="" value="" />
+                </div>
+                <div class="col-xs-4 col-sm-3 col-md-3  ">
+                    <a id="answer" class="btn btn-large btn-block btn-danger">提交</a>
+                </div>
+                <div class="col-xs-4 col-sm-3 col-md-3  ">
+                    <a id="ce" class="btn btn-large btn-block btn-warning">清空</a>
+                </div>
+                <div class="col-xs-4 col-sm-3 col-md-3  ">
+                    <a id="ce" class="btn btn-large btn-block btn-success">求助</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<footer class="footer" id="footer">
-      <div class="container">
-        <p>该游戏由kokdemo制作<a href="http://twitter.com/kokdemo" target="_blank">@kokdemo</a>，如果你有好的意见或建议，请发送至我的主页。</p>
-        <p>blog：<a href="http://wocai.de" target="_blank">我猜的</a></p>
-      </div>
+    <footer class="footer" id="footer">
+        <div class="container">
+            <p>该游戏由kokdemo制作<a href="http://twitter.com/kokdemo" target="_blank">@kokdemo</a>，如果你有好的意见或建议，请发送至我的主页。</p>
+            <p>blog：<a href="http://wocai.de" target="_blank">我猜的</a></p>
+        </div>
     </footer>
-	
+
 </body>
+
 </html>
