@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="description" content="24点游戏">
@@ -6,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
     <title>Cool24</title>
     <!-- <link rel="stylesheet" type="text/css" href="css/main_new.css" /> -->
+    <link href="http://cdn.bootcss.com/bootstrap/4.0.0-alpha.3/css/bootstrap.css" rel="stylesheet">
     <style>
 
     </style>
@@ -13,11 +15,11 @@
 </head>
 
 <body>
-    <div class='start'>
-        <h1>Cool24</h1>
+    <div class='start container-fluid text-xs-center'>
+        <h1 class="center-block">Cool24</h1>
         <span>数字游戏，提神醒脑</span>
     </div>
-    <div class='game'>
+    <div class='game container-fluid text-xs-center'>
         <div class='info'>
             <span class='score'></span>
             <span class='highest-score'></span>
@@ -26,24 +28,24 @@
             <span class='time'></span>
         </div>
         <div class='numbers'>
-            <button class='number' v-for='(index,item) in numbers' track-by="$index" v-text='item.number' v-show='!item.used' v-on:click='useNumber(item.number,index)' v-bind:class="{'available':item.available}"></button>
+            <button class='number btn' v-for='(index,item) in numbers' track-by="$index" v-text='item.number' v-show='!item.used' v-on:click='useNumber(item.number,index)' v-bind:class="{'available':item.available}"></button>
         </div>
         <div class='signals'>
-            <button class='signal' v-for='item in signals' v-text='item' v-on:click='useSignals(item)'></button>
+            <button class='signal btn' v-for='item in signals' v-text='item' v-on:click='useSignals(item)'></button>
         </div>
         <div class="input">
             <input type="text" name="" id="" v-model='inputs'>
         </div>
         <div class="buttons">
-            <button v-on:click='submit(inputs,numbers)'>提交</button>
-            <button>清空</button>
-            <button>求助</button>
+            <button class="btn" v-on:click='submit(inputs,numbers)'>提交</button>
+            <button class="btn" v-on:click='clear()'>清空</button>
+            <button class="btn">求助</button>
         </div>
     </div>
-    <div class='result'>
+    <div class='result container-fluid text-xs-center'>
         <span>你一共答对了x题，获得了x分，你此前最高分是x</span>
         <div class="buttons">
-            <button>再来一局</button>
+            <button class="btn">再来一局</button>
         </div>
     </div>
     <script>
@@ -135,6 +137,7 @@
         if(result !== false){
             data.numbers = numbers;
             data.result = result;
+            console.info(result);
             return({
                 numbers:numbers,
                 result:result
@@ -184,11 +187,28 @@
             submit:function(inputs,numbers) {
                 for(var i=0;i<4;i++){
                     if(!numbers[i].used){
-                        return('not used all numbers')
+                        console.info('not used all numbers')
+                        return 0;
                     }
                 }
                 var reg = /[\u002b\u002d\u002a\u002f]{2,}/;
-                console.info(reg.test(inputs))
+                if(reg.test(inputs)){
+                    console.info('wrong signal')
+                }else{
+                    var result = eval(inputs);
+                    if(result == 24){
+                        console.info('right')
+                    }else{
+                        console.info('wrong')
+                    }
+                }
+            },
+            clear:function() {
+                for(var i=0;i<4;i++){
+                    this.$data.numbers[i].used = false;
+                }
+                this.$data.inputs = '';
+                console.info('all clear')
             }
         }
     });
