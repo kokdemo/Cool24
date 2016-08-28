@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="description" content="24点游戏">
@@ -15,23 +16,25 @@
 </head>
 
 <body>
-    <div class='start container-fluid text-xs-center'>
+    <div class='start container-fluid text-xs-center' v-show='route == "start"'>
         <h1 class="center-block">Cool24</h1>
-        <span>数字游戏，提神醒脑</span>
+        <span>简单游戏，提神<del>醒脑</del></span>
+        <br>
+        <button class="btn" v-on:click='startNewGame()'>开始游戏</button>
     </div>
-    <div class='game container-fluid text-xs-center'>
+    <div class='game container-fluid text-xs-center' v-show='route == "game"'>
         <div class='info'>
             <span class='score'></span>
             <span class='highest-score'></span>
         </div>
         <div class='timer'>
-            <span class='time'></span>
+            <span class='time' v-text='time'></span>
         </div>
         <div class='numbers'>
-            <button class='number btn' v-for='(index,item) in numbers' track-by="$index" v-text='item.number' v-show='!item.used' v-on:click='useNumber(item.number,index)' v-bind:class="{'available':item.available}"></button>
+            <button class='number btn' v-for='(index,item) in numbers' track-by="$index" v-text='item.number' v-show='!item.used' v-on:click='useNumber(item.number,index,item.available)' v-bind:class="{'available':item.available}"></button>
         </div>
         <div class='signals'>
-            <button class='signal btn' v-for='item in signals' v-text='item' v-on:click='useSignals(item)'></button>
+            <button class='signal btn' v-for='item in signals' v-text='item' v-on:click='useSignals(item,item.available)'></button>
         </div>
         <div class="input">
             <input type="text" name="" id="" v-model='inputs'>
@@ -42,176 +45,257 @@
             <button class="btn">求助</button>
         </div>
     </div>
-    <div class='result container-fluid text-xs-center'>
+    <div class='result container-fluid text-xs-center' v-show='route == "result"'>
         <span>你一共答对了x题，获得了x分，你此前最高分是x</span>
         <div class="buttons">
-            <button class="btn">再来一局</button>
+            <button class="btn" v-on:click='startNewGame()'>再来一局</button>
         </div>
     </div>
+    <div class='popover' v-show='popover.show'>
+        <span v-text='popover.text'></span>
+    </div>
     <script>
-    function temp4(a,b) {
-        return(
-            [a+b,a-b,b-a,a*b,a/b,b/a]
-        )
-    }
-    var deepCopy = function(o) {
-        if (o instanceof Array) {
-            var n = [];
-            for (var i = 0; i < o.length; ++i) {
-                n[i] = deepCopy(o[i]);
-            }
-            return n;
-
-        } else if (o instanceof Object) {
-            var n = {}
-            for (var i in o) {
-                n[i] = deepCopy(o[i]);
-            }
-            return n;
-        } else {
-            return o;
+        //done 随机数字，计时器，验证公式，计算答案，界面跳转
+        //todo 记分板，高分记录，求助系统，css
+        function temp4(a, b) {
+            return (
+                [a + b, a - b, b - a, a * b, a / b, b / a]
+            )
         }
-    }
-    var is24 = function(number) {
-        var origin = deepCopy(number);
-        for (var i = 0; i < origin.length; i++) {
-            var a = origin[i];
-            origin.splice(i,1);
-            for (var j = 0; j < origin.length; j++) {
-                var b= origin[j];
-                origin.splice(j,1);
-                var temp = temp4(a,b);
-                for (var k = 0; k < origin.length; k++) {
-                    var c= origin[k];
-                    origin.splice(j,1);
-                    var d = origin[0];
-                    var temp2 = [];
-                    temp2 = temp2.concat(temp4(temp[0],c));
-                    temp2 = temp2.concat(temp4(temp[1],c));
-                    temp2 = temp2.concat(temp4(temp[2],c));
-                    temp2 = temp2.concat(temp4(temp[3],c));
-                    temp2 = temp2.concat(temp4(temp[4],c));
-                    temp2 = temp2.concat(temp4(temp[5],c));
-                    var temp3 =[];
-                    for(var o=0;o<temp2.length;o++){
-                        temp3 = temp3.concat(temp4(temp2[o],d));
-                    }
-                    for(var q=0;q<temp3.length;q++){
-                        if(temp3[q]==24){
-                            var signs = ['+','-','-','*','/','/']
-                            var sign1 = Math.floor(q/36);
-                            var sign2 = Math.floor(q%36/6);
-                            var sign3 = q%6;
-                            var strings = '';
-                            if(sign1 == 2||sign1 ==5){
-                                strings += '('+b+signs[sign1]+a+')';
-                            }else{
-                                strings += '('+a+signs[sign1]+b+')';
+        var deepCopy = function(o) {
+            if (o instanceof Array) {
+                var n = [];
+                for (var i = 0; i < o.length; ++i) {
+                    n[i] = deepCopy(o[i]);
+                }
+                return n;
+
+            } else if (o instanceof Object) {
+                var n = {}
+                for (var i in o) {
+                    n[i] = deepCopy(o[i]);
+                }
+                return n;
+            } else {
+                return o;
+            }
+        }
+        var is24 = function(number) {
+            var origin = deepCopy(number);
+            for (var i = 0; i < origin.length; i++) {
+                var a = origin[i];
+                origin.splice(i, 1);
+                for (var j = 0; j < origin.length; j++) {
+                    var b = origin[j];
+                    origin.splice(j, 1);
+                    var temp = temp4(a, b);
+                    for (var k = 0; k < origin.length; k++) {
+                        var c = origin[k];
+                        origin.splice(j, 1);
+                        var d = origin[0];
+                        var temp2 = [];
+                        temp2 = temp2.concat(temp4(temp[0], c));
+                        temp2 = temp2.concat(temp4(temp[1], c));
+                        temp2 = temp2.concat(temp4(temp[2], c));
+                        temp2 = temp2.concat(temp4(temp[3], c));
+                        temp2 = temp2.concat(temp4(temp[4], c));
+                        temp2 = temp2.concat(temp4(temp[5], c));
+                        var temp3 = [];
+                        for (var o = 0; o < temp2.length; o++) {
+                            temp3 = temp3.concat(temp4(temp2[o], d));
+                        }
+                        for (var q = 0; q < temp3.length; q++) {
+                            if (temp3[q] == 24) {
+                                var signs = ['+', '-', '-', '*', '/', '/']
+                                var sign1 = Math.floor(q / 36);
+                                var sign2 = Math.floor(q % 36 / 6);
+                                var sign3 = q % 6;
+                                var strings = '';
+                                if (sign1 == 2 || sign1 == 5) {
+                                    strings += '(' + b + signs[sign1] + a + ')';
+                                } else {
+                                    strings += '(' + a + signs[sign1] + b + ')';
+                                }
+                                if (sign2 == 2 || sign2 == 5) {
+                                    strings = '(' + c + signs[sign2] + strings + ')';
+                                } else {
+                                    strings = '(' + strings + signs[sign2] + c + ')';
+                                }
+                                if (sign3 == 2 || sign3 == 5) {
+                                    strings = d + signs[sign3] + strings;
+                                } else {
+                                    strings = strings + signs[sign3] + d;
+                                }
+                                return (strings);
                             }
-                            if(sign2 == 2||sign2 ==5){
-                                strings = '('+c+signs[sign2]+strings+')';
-                            }else{
-                                strings = '('+strings+signs[sign2]+c+')';
-                            }
-                            if(sign3 == 2||sign3 ==5){
-                                strings = d+signs[sign3]+strings;
-                            }else{
-                                strings = strings+signs[sign3]+d;
-                            }
-                            return(strings);
                         }
                     }
                 }
+                origin = deepCopy(number);
             }
-            origin = deepCopy(number);
+            return (false);
         }
-        return(false);
-    }
-    var firstNumbers = {};
-    var get4Numbers = function(data){
-        var numbers = [];
-        for (var i = 3; i >= 0; i--) {
-    		numbers.push(Math.floor(Math.random() * 10 + 1));
-    	};
-        var result = is24(numbers);
-        if(result !== false){
-            data.numbers = numbers;
-            data.result = result;
-            console.info(result);
-            return({
-                numbers:numbers,
-                result:result
-            });
-        }else{
-            get4Numbers(data);
+        var firstNumbers = {};
+        var get4Numbers = function(data) {
+            var numbers = [];
+            for (var i = 3; i >= 0; i--) {
+                numbers.push(Math.floor(Math.random() * 10 + 1));
+            };
+            var result = is24(numbers);
+            if (result !== false) {
+                data.numbers = numbers;
+                data.result = result;
+                console.info(result);
+                return ({
+                    numbers: numbers,
+                    result: result
+                });
+            } else {
+                get4Numbers(data);
+            }
         }
-    }
-    get4Numbers(firstNumbers);
-    var cool = new Vue({
-        el:'body',
-        data:{
-            numbers:[
-                {number:firstNumbers.numbers[0],used:false,available:true},
-                {number:firstNumbers.numbers[1],used:false,available:true},
-                {number:firstNumbers.numbers[2],used:false,available:true},
-                {number:firstNumbers.numbers[3],used:false,available:true}
-            ],
-            signals:['+','-','*','/','(',')'],
-            time:0,
-            score:0,
-            highestScore:0,
-            inputs:'',
-            result:firstNumbers.result
-        },
-        compute:{
+        get4Numbers(firstNumbers);
+        var cool = new Vue({
+            el: 'body',
+            data: {
+                numbers: [{
+                    number: firstNumbers.numbers[0],
+                    used: false,
+                    available: true
+                }, {
+                    number: firstNumbers.numbers[1],
+                    used: false,
+                    available: true
+                }, {
+                    number: firstNumbers.numbers[2],
+                    used: false,
+                    available: true
+                }, {
+                    number: firstNumbers.numbers[3],
+                    used: false,
+                    available: true
+                }],
+                signals: ['+', '-', '*', '/', '(', ')'],
+                time: 60,
+                score: 0,
+                highestScore: 0,
+                inputs: '',
+                result: firstNumbers.result,
+                route: 'start',
+                appeal: 0,
+                popover: {
+                    show: false,
+                    text: ''
+                },
+                clock: ''
+            },
+            compute: {},
+            ready: function() {},
+            methods: {
+                useNumber: function(number, index, available) {
+                    if (available) {
+                        this.$data.inputs += number;
+                        this.$data.numbers[index].used = true;
+                        for (var i = 0; i < 4; i++) {
+                            this.$data.numbers[i].available = false;
+                        }
+                    }
+                },
+                useSignals: function(signal) {
+                    this.$data.inputs += '' + signal;
+                    for (var i = 0; i < 4; i++) {
+                        if (signal !== '(' && signal !== ')') {
+                            this.$data.numbers[i].available = true;
+                        }
+                    }
+                },
+                submit: function(inputs, numbers) {
+                    for (var i = 0; i < 4; i++) {
+                        if (!numbers[i].used) {
+                            console.info('not used all numbers')
+                            return 0;
+                        }
+                    }
+                    var reg = /[\u002b\u002d\u002a\u002f]{2,}/;
+                    if (reg.test(inputs)) {
+                        console.info('wrong signal')
+                    } else {
+                        var result = Math.abs(eval(inputs) - 24);
+                        if (result < 0.4) {
+                            console.info('right')
+                            this.startNewGame();
+                        } else {
+                            console.info('wrong');
+                            this.switchRoute('result');
+                        }
+                    }
+                },
+                clear: function() {
+                    for (var i = 0; i < 4; i++) {
+                        this.$data.numbers[i].used = false;
+                    }
+                    this.$data.inputs = '';
+                    console.info('all clear')
+                },
+                appeal: function() {
+                    if (this.$data.appeal > 0) {
 
-        },
-        ready:function(){
-        },
-        methods:{
-            useNumber:function (number,index) {
-                this.$data.inputs += number;
-                this.$data.numbers[index].used = true;
-                for(var i=0;i<4;i++){
-                    this.$data.numbers[i].available = false;
-                }
-            },
-            useSignals:function (signal) {
-                this.$data.inputs += ''+signal;
-                for(var i=0;i<4;i++){
-                    if(signal !== '(' && signal !== ')'){
-                        this.$data.numbers[i].available = true;
                     }
-                }
-            },
-            submit:function(inputs,numbers) {
-                for(var i=0;i<4;i++){
-                    if(!numbers[i].used){
-                        console.info('not used all numbers')
-                        return 0;
+                },
+                switchRoute: function(route) {
+                    this.$data.route = route;
+                },
+                popoverUp: function(type, text) {
+                    this.$data.popover.show = true;
+                    this.$data.popover.text = text;
+                    setTimeout(function() {
+                        cool.$data.popover.show = false
+                    }, 3000);
+                },
+                setClock: function(time) {
+                    var dataTime = this.$data.time;
+                    var s = time;
+                    var int = setInterval(function() {
+                        s = s - 1;
+                        cool.$data.time = s;
+                        if (s <= 0) {
+                            clearInterval(int);
+                            cool.endGame()
+                        }
+                    }, 1000);
+                    return int
+                },
+                startNewGame: function() {
+                    this.switchRoute("game");
+                    get4Numbers(firstNumbers);
+                    this.$data.numbers = [{
+                        number: firstNumbers.numbers[0],
+                        used: false,
+                        available: true
+                    }, {
+                        number: firstNumbers.numbers[1],
+                        used: false,
+                        available: true
+                    }, {
+                        number: firstNumbers.numbers[2],
+                        used: false,
+                        available: true
+                    }, {
+                        number: firstNumbers.numbers[3],
+                        used: false,
+                        available: true
+                    }];
+                    this.popoverUp('', 'gamestart')
+                    if (this.$data.clock !== '') {
+                        clearInterval(this.$data.clock)
                     }
+                    this.$data.clock = this.setClock(60);
+                },
+                endGame:function () {
+                    this.switchRoute("result");
                 }
-                var reg = /[\u002b\u002d\u002a\u002f]{2,}/;
-                if(reg.test(inputs)){
-                    console.info('wrong signal')
-                }else{
-                    var result = eval(inputs);
-                    if(result == 24){
-                        console.info('right')
-                    }else{
-                        console.info('wrong')
-                    }
-                }
-            },
-            clear:function() {
-                for(var i=0;i<4;i++){
-                    this.$data.numbers[i].used = false;
-                }
-                this.$data.inputs = '';
-                console.info('all clear')
             }
-        }
-    });
+        });
     </script>
 </body>
 
