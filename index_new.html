@@ -10,12 +10,51 @@
     <!-- <link rel="stylesheet" type="text/css" href="css/main_new.css" /> -->
     <link href="http://cdn.bootcss.com/bootstrap/4.0.0-alpha.3/css/bootstrap.css" rel="stylesheet">
     <style>
-
+        #floater{
+            max-width: 750px;
+            margin: auto;
+            height:100vh;
+            background: #ddd;
+            display: -webkit-flex;
+            display:         flex;
+            -webkit-align-items: center;
+            align-items: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+        }
+        .start,.game,.result,.popover{
+        }
+        .start,.game,.result{
+            background: #eee;
+        }
+        .start h1{
+            line-height: 5rem;
+        }
+        .start span{
+            display: block;
+            margin-bottom: 4rem;
+        }
+        .info{
+            max-width: 750px;
+            margin: auto;
+        }
+        .game{
+            min-height:300px;
+        }
+        .game .timer{
+            font-size:5rem;
+            line-height:10rem;
+        }
     </style>
     <script type="text/javascript" src="js/vue.js"></script>
 </head>
 
 <body>
+<div class='info'>
+    <span class='score'>123</span>
+    <span class='highest-score'>321</span>
+</div>
+<div id="floater">
     <div class='start container-fluid text-xs-center' v-show='route == "start"'>
         <h1 class="center-block">Cool24</h1>
         <span>简单游戏，提神<del>醒脑</del></span>
@@ -23,10 +62,6 @@
         <button class="btn" v-on:click='startNewGame()'>开始游戏</button>
     </div>
     <div class='game container-fluid text-xs-center' v-show='route == "game"'>
-        <div class='info'>
-            <span class='score'></span>
-            <span class='highest-score'></span>
-        </div>
         <div class='timer'>
             <span class='time' v-text='time'></span>
         </div>
@@ -54,6 +89,7 @@
     <div class='popover' v-show='popover.show'>
         <span v-text='popover.text'></span>
     </div>
+</div>
     <script>
         //done 随机数字，计时器，验证公式，计算答案，界面跳转
         //todo 记分板，高分记录，求助系统，css
@@ -140,7 +176,7 @@
             var numbers = [];
             for (var i = 3; i >= 0; i--) {
                 numbers.push(Math.floor(Math.random() * 10 + 1));
-            };
+            }
             var result = is24(numbers);
             if (result !== false) {
                 data.numbers = numbers;
@@ -267,6 +303,7 @@
                 },
                 startNewGame: function() {
                     this.switchRoute("game");
+                    this.clear();
                     get4Numbers(firstNumbers);
                     this.$data.numbers = [{
                         number: firstNumbers.numbers[0],
@@ -285,7 +322,7 @@
                         used: false,
                         available: true
                     }];
-                    this.popoverUp('', 'gamestart')
+                    this.popoverUp('', 'gamestart');
                     if (this.$data.clock !== '') {
                         clearInterval(this.$data.clock)
                     }
